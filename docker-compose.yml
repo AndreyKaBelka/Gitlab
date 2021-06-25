@@ -1,0 +1,44 @@
+version: '3.0'
+
+services:
+  server:
+    image: 'gitlab/gitlab-ee:latest'
+    environment:
+      GITLAB_ROOT_PASSWORD: My5uper5ecretPa55w0rd!
+    ports:
+      - '8929:8929'
+      - '2224:22'
+    volumes:
+      - git-config:/etc/gitlab
+      - git-logs:/var/log/gitlab
+      - git-data:/var/opt/gitlab
+      - ./gitlab.rb:/etc/gitlab/gitlab.rb
+    networks:
+      - net
+
+  runner:
+    image: "gitlab/gitlab-runner:latest"
+    restart: always
+    volumes:
+      - runner:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8093:8093"
+    networks:
+      - net
+    depends_on:
+      - server
+
+networks:
+  net:
+    driver: bridge
+
+volumes:
+  git-config:
+    external: false
+  git-data:
+    external: false
+  git-logs:
+    external: false
+  runner:
+    external: false
