@@ -7,8 +7,8 @@
 5. Go to docker container
     `docker exec -it gitlab_runner_1 bash`
 6. Run these commands: 
-    `export REGISTRATION_TOKEN=<your_registration_token>`
     ```
+    export REGISTRATION_TOKEN=<your_registration_token>
     gitlab-runner register \
         --non-interactive \
         --url http://server:8929 \
